@@ -11,8 +11,18 @@ You will require a `GeoLite2` database file. This database is free and can be do
 
 
 ## Installation
-```
+```bash
 go install gitlab.com/lu-ka/geopipe@latest
+```
+
+## Build from source
+```bash
+git clone https://gitlab.com/lu-ka/geopipe
+cd geopipe
+go build
+
+# or via makefile
+make linux || make windows || make all
 ```
 
 ## Usage
