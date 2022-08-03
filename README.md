@@ -38,7 +38,7 @@ usage: 'cat domains.txt | geopipe [OPTIONS]'
 ```
 
 ## Backstory
-I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only apply to servers located in Switzerland, I needed a way to filter out domains with would have the correct TLD but are not located in Switzerland.
+I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only apply to servers located in Switzerland, I needed a way to filter out domains which would have the correct TLD but are not located in Switzerland.
 
 I've also never done something in GO before and since all the cool "pipe tools" are written in GO I thought I would teach myself something new.
 
@@ -52,7 +52,7 @@ https://github.com/oschwald/maxminddb-golang
 # this was the base of this project and contributed some snippets here and there
 https://github.com/thelicato/fire
 
-# other noteworth modules include
+# other noteworthy modules include
 https://github.com/projectdiscovery/retryabledns
 https.//github.com/asaskevich/govalidator
 
