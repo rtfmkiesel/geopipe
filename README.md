@@ -9,6 +9,7 @@ A tool to take domains from `stdin` and output them to `stdout` if have they at 
 ## Requirements
 You will require a `GeoLite2` database file. This database is free and can be downloaded [here](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data). License agreements of [MaxMind](https://maxmind.com) apply.
 
+Parse the path to this file via the `-f` option or with the environment variable `MMDB`.
 
 ## Installation
 ```bash

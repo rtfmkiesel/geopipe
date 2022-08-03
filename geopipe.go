@@ -259,6 +259,21 @@ func main() {
 		os.Exit(1)
 	}
 
+	// check if env var exists
+	dbpathENV, ok := os.LookupEnv("MMDB")
+	if ok {
+		dbpath = dbpathENV
+		verbose(mode, "[main] Got dbpath from ENV")
+	}
+
+	// check if dbpath exists
+	_, err := os.Stat(dbpath)
+	if err != nil {
+		usage(fmt.Sprintf("[main] File %s does not exist", dbpath))
+		os.Exit(1)
+	}
+	verbose(mode, fmt.Sprintf("[main] File %s exists", dbpath))
+
 	banner(mode)
 	verbose(mode, "[main] Mode: Verbose")
 
