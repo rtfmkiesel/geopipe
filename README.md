@@ -42,6 +42,8 @@ I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only app
 
 I've also never done something in GO before and since all the cool "pipe tools" are written in GO I thought I would teach myself something new.
 
+[Blog Post](https://lukasec.ch/posts/geopipe.html).
+
 ## Kudos
 ```
 # the <3 of this project
@@ -56,6 +58,9 @@ https.//github.com/asaskevich/govalidator
 
 # & all of the sub modules associated with the ones mentioned above
 ```
+
+## Feedback
+This was my first time coding in Golang. As always, feedback via public channels or merge/pull requests is appreciated.
 
 ## License
 This code is released under the [MIT License](https://gitlab.com/lu-ka/geopipe/blob/main/LICENSE).
