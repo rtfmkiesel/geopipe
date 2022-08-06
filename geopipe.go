@@ -56,7 +56,7 @@ func usage(error string) {
 -f	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
 -o	Output mode {default, json, verbose} (default: default)
 -w	Number of workers to spawn (default: 1)
--r	Comma separated list of DNS resolvers to use (default: 1.1.1.1,8.8.8.8,9.9.9.9)
+-r	Comma separated list of DNS resolvers (w/ ports) to use (default: 1.1.1.1:53,8.8.8.8:53,9.9.9.9:53)
 -h	Prints this text
 `)
 }
@@ -249,7 +249,7 @@ func main() {
 	flag.StringVar(&mode, "o", "default", "Output mode {default, json, verbose}")
 	flag.IntVar(&workercount, "w", 1, "Number of workers to spawn")
 	flag.BoolVar(&help, "h", false, "Prints this text")
-	flag.StringVar(&rawResolvers, "r", "1.1.1.1:53,8.8.8.8:53,9.9.9.9:53", "Comma separated list of DNS resolvers to use")
+	flag.StringVar(&rawResolvers, "r", "1.1.1.1:53,8.8.8.8:53,9.9.9.9:53", "Comma separated list of DNS resolvers (w/ ports) to use")
 	flag.Parse()
 
 	// show help
