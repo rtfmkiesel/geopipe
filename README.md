@@ -34,17 +34,15 @@ usage: 'cat domains.txt | geopipe [OPTIONS]'
 -f	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
 -o	Output mode {default, json, verbose} (default: default)
 -w	Number of workers to spawn (default: 1)
+-r	Comma separated list of DNS resolvers (w/ ports) to use (default: 1.1.1.1:53,8.8.8.8:53,9.9.9.9:53)
 -h	Prints this text
 ```
 
-## Backstory
-I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only apply to servers located in Switzerland, I needed a way to filter out domains which would have the correct TLD but are not located in Switzerland.
-
-I've also never done something in GO before and since all the cool "pipe tools" are written in GO I thought I would teach myself something new.
-
-[Blog Post](https://lukasec.ch/posts/geopipe.html).
-
 ## Kudos
+### Contributors
+- [cydave](https://gitlab.com/cydave)
+
+### Modules & Code Snippets
 ```
 # the <3 of this project
 https://github.com/oschwald/maxminddb-golang 
@@ -58,6 +56,13 @@ https.//github.com/asaskevich/govalidator
 
 # & all of the sub modules associated with the ones mentioned above
 ```
+
+## Backstory
+I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only apply to servers located in Switzerland, I needed a way to filter out domains which would have the correct TLD but are not located in Switzerland.
+
+I've also never done something in GO before and since all the cool "pipe tools" are written in GO I thought I would teach myself something new.
+
+For a bit more check out my [Blog Post](https://lukasec.ch/posts/geopipe.html).
 
 ## Feedback
 This was my first time coding in Golang. As always, feedback via public channels or merge/pull requests is appreciated.
