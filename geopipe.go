@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"strconv"
@@ -55,6 +56,7 @@ func usage(error string) {
 -f	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
 -o	Output mode {default, json, verbose} (default: default)
 -w	Number of workers to spawn (default: 1)
+-r	Comma separated list of DNS resolvers to use (default: 1.1.1.1,8.8.8.8,9.9.9.9)
 -h	Prints this text
 `)
 }
@@ -76,13 +78,12 @@ func lookupDNS(domain string, dnsClient retryabledns.Client, workerid int, mode 
 }
 
 // worker for concurrent DNS lookups
-func workerDNS(wgDNS *sync.WaitGroup, chanDNSJobs <-chan string, chanDBJobs chan<- string, workerid int, mode string) {
+func workerDNS(wgDNS *sync.WaitGroup, chanDNSJobs <-chan string, chanDBJobs chan<- string, workerid int, resolvers []string, mode string) {
 
 	defer wgDNS.Done()
 
 	// init DNS client
 	// since the MaxMind db wants the ip and not the domain name
-	resolvers := []string{"9.9.9.9:53", "1.1.1.1:53", "8.8.8.8:53"}
 	dnsClient, err := retryabledns.New(resolvers, 3)
 	if err != nil {
 		log.Fatal(err)
@@ -224,7 +225,13 @@ var record struct {
 	} `maxminddb:"country"`
 }
 
+func shuffleResolvers(resolvers []string) []string {
+	rand.Shuffle(len(resolvers), func(i, j int) { resolvers[i], resolvers[j] = resolvers[j], resolvers[i] })
+	return resolvers
+}
+
 func main() {
+	rand.Seed(time.Now().UnixNano())
 
 	// to calculate the runtime at the end
 	timeStart := time.Now()
@@ -235,12 +242,14 @@ func main() {
 	var mode string
 	var workercount int
 	var help bool
+	var rawResolvers string
 
 	flag.StringVar(&countrycode, "c", "US", "Two letter country code of the country to pipe thru")
 	flag.StringVar(&dbpath, "f", "./GeoLite2-Country.mmdb", "Path to the 'GeoLite2-Country.mmdb' file")
 	flag.StringVar(&mode, "o", "default", "Output mode {default, json, verbose}")
 	flag.IntVar(&workercount, "w", 1, "Number of workers to spawn")
 	flag.BoolVar(&help, "h", false, "Prints this text")
+	flag.StringVar(&rawResolvers, "r", "1.1.1.1:53,8.8.8.8:53,9.9.9.9:53", "Comma separated list of DNS resolvers to use")
 	flag.Parse()
 
 	// show help
@@ -258,6 +267,7 @@ func main() {
 		usage(fmt.Sprintf("[main] Unknown mode %s", mode))
 		os.Exit(1)
 	}
+	banner(mode)
 
 	// check if env var exists
 	dbpathENV, ok := os.LookupEnv("MMDB")
@@ -274,7 +284,6 @@ func main() {
 	}
 	verbose(mode, fmt.Sprintf("[main] File %s exists", dbpath))
 
-	banner(mode)
 	verbose(mode, "[main] Mode: Verbose")
 
 	// open the maxminddb
@@ -297,6 +306,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Populating resolver pool
+	var resolvers []string
+	for _, ip := range strings.Split(rawResolvers, ",") {
+		if !strings.Contains(ip, ":") {
+			resolvers = append(resolvers, fmt.Sprintf("%s:53", ip))
+		} else {
+			resolvers = append(resolvers, ip)
+		}
+	}
+	verbose(mode, fmt.Sprintf("[main] Using the following DNS resolvers: %s", resolvers))
+
 	// create the channels
 	chanDNSJobs := make(chan string) // jobs for the dns resolvers
 	chanDBJobs := make(chan string)  // jobs to look up inside the MaxMind db
@@ -309,7 +329,9 @@ func main() {
 
 	// creating the DNS workers
 	for workerid := 0; workerid < workercount; workerid++ {
-		go workerDNS(wgDNS, chanDNSJobs, chanDBJobs, workerid, mode)
+		resolverPool := shuffleResolvers(resolvers)
+		go workerDNS(wgDNS, chanDNSJobs, chanDBJobs, workerid, resolverPool, mode)
+		verbose(mode, fmt.Sprintf("[main] Spawning worker [%d] with %s resolvers", workerid, resolverPool))
 		wgDNS.Add(1)
 	}
 	verbose(mode, fmt.Sprintf("[main] Created %d DNS worker(s)", workercount))
