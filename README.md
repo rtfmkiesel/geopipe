@@ -1,7 +1,3 @@
-<div align="center">
-    <img src="https://gitlab.com/lu-ka/geopipe/-/raw/main/geopipe.png">
-</div>
-
 # geopipe
 
 A tool to take domains from `stdin` and output them to `stdout` if have they at least one IP address inside the selected country.
@@ -13,17 +9,14 @@ Parse the path to this file via the `-f` option or with the environment variable
 
 ## Installation
 ```bash
-go install gitlab.com/lu-ka/geopipe@latest
+go install gitlab.com/rtfmkiesel/geopipe@latest
 ```
 
 ## Build from source
 ```bash
-git clone https://gitlab.com/lu-ka/geopipe
+git clone https://gitlab.com/rtfmkiesel/geopipe
 cd geopipe
 go build
-
-# or via makefile
-make linux || make windows || make all
 ```
 
 ## Usage
@@ -57,18 +50,11 @@ https.//github.com/asaskevich/govalidator
 # & all of the sub modules associated with the ones mentioned above
 ```
 
-## Backstory
+## Why
 I wanted to do some _statistics_ on `.ch` domains. But since Swiss laws only apply to servers located in Switzerland, I needed a way to filter out domains which would have the correct TLD but are not located in Switzerland.
 
-I've also never done something in GO before and since all the cool "pipe tools" are written in GO I thought I would teach myself something new.
-
-For a bit more check out my [Blog Post](https://lukasec.ch/posts/geopipe.html).
-
-## Feedback
-This was my first time coding in Golang. As always, feedback via public channels or merge/pull requests is appreciated.
-
 ## License
-This code is released under the [MIT License](https://gitlab.com/lu-ka/geopipe/blob/main/LICENSE).
+This code is released under the [MIT License](https://gitlab.com/rtfmkiesel/geopipe/blob/main/LICENSE).
 
 ## Legal
 This code is provided for educational use only. If you engage in any illegal activity the author does not take any responsibility for it. By using this code, you agree with these terms.

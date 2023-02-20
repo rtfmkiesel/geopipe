@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2021 gitlab.com/lu-ka
+Copyright (c) 2022 gitlab.com/rtfmkiesel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

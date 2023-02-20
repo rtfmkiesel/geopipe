@@ -39,7 +39,7 @@ func banner(mode string) {
 ░▓█  ██▓▒▓█  ▄ ▒██   ██░▒██▄█▓▒ ▒░██░▒██▄█▓▒ ▒▒▓█  ▄ 
 ░▒▓███▀▒░▒████▒░ ████▓▒░▒██▒ ░  ░░██░▒██▒ ░  ░░▒████▒
  ░▒   ▒ ░░ ▒░ ░░ ▒░▒░▒░ ▒▓▒░ ░  ░░▓  ▒▓▒░ ░  ░░░ ▒░ ░`)
-		fmt.Print("by \033[36m@lukahacksstuff\033[0m | \033[36mhttps://gitlab.com/lu-ka/geopipe\033[0m\n\n")
+		fmt.Print("                     by https://gitlab.com/rtfmkiesel\n\n")
 	}
 }
 
