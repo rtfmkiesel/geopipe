@@ -3,10 +3,9 @@ module gitlab.com/rtfmkiesel/geopipe
 go 1.20
 
 require (
-	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/oschwald/maxminddb-golang v1.10.0
 	github.com/projectdiscovery/retryabledns v1.0.21
-	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
 )
 
 require (

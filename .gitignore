@@ -29,11 +29,7 @@ go.work
 /Godeps/
 
 # End of https://www.toptal.com/developers/gitignore/api/go
-
-# my testing files
 *.txt
-# MaxMind DB files
 *.mmdb
-# builds
 geopipe.exe
 geopipe
