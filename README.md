@@ -1,5 +1,5 @@
 # geopipe
-A tool to take domains from `stdin` and output them to `stdout` if have they at least one IP address inside the selected country.
+A tool to take domains from `stdin` and output them to `stdout` if have they at least one IP address inside the specified country.
 
 ## Requirements
 You will need a `GeoLite2` database file. This database is free and can be downloaded [here](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data). License agreements of [MaxMind](https://maxmind.com) apply. Parse the path to this file via the `-f` option or with the environment variable `MMDB`.
@@ -17,22 +17,19 @@ Options:
 
 ## Installation
 ```bash
-go install gitlab.com/rtfmkiesel/geopipe@latest
+go install gitlab.com/rtfmkiesel/geopipe/cli/geopipe@latest
 ```
 
-### Build from source
+## Build from source
 ```bash
 git clone https://gitlab.com/rtfmkiesel/geopipe
 cd geopipe
-# build binary
+# to build binary in the current directory
 go build -ldflags="-s -w" "cli/geopipe"
-# install into GOPATH/bin
+# to build & install binary into GOPATH/bin
 go install "cli/geopipe"
 ```
 
 ## Kudos
-### Contributors
-- [cydave](https://github.com/cydave)
-
-### Modules
-- [oschwald/maxminddb-golang](https://github.com/oschwald/maxminddb-golang)
+- [cydave](https://github.com/cydave) for contributing
+- [oschwald](https://github.com/oschwald) for the [maxminddb-golang](https://github.com/oschwald/maxminddb-golang) module
