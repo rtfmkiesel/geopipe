@@ -10,8 +10,8 @@ import (
 
 	"github.com/asaskevich/govalidator"
 	"github.com/oschwald/maxminddb-golang"
-	"gitlab.com/rtfmkiesel/geopipe/pkg/dns"
-	"gitlab.com/rtfmkiesel/geopipe/pkg/maxmind"
+	"github.com/rtfmkiesel/geopipe/pkg/dns"
+	"github.com/rtfmkiesel/geopipe/pkg/maxmind"
 )
 
 // returns true if []string slice contains string

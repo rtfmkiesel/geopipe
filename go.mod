@@ -1,4 +1,4 @@
-module gitlab.com/rtfmkiesel/geopipe
+module github.com/rtfmkiesel/geopipe
 
 go 1.20
 

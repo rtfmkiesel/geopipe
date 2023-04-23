@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/oschwald/maxminddb-golang"
-	"gitlab.com/rtfmkiesel/geopipe/pkg/dns"
+	"github.com/rtfmkiesel/geopipe/pkg/dns"
 )
 
 type Result struct {

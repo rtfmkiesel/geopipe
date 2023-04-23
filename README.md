@@ -17,12 +17,12 @@ Options:
 
 ## Installation
 ```bash
-go install gitlab.com/rtfmkiesel/geopipe/cli/geopipe@latest
+go install github.com/rtfmkiesel/geopipe/cli/geopipe@latest
 ```
 
 ## Build from source
 ```bash
-git clone https://gitlab.com/rtfmkiesel/geopipe
+git clone https://github.com/rtfmkiesel/geopipe
 cd geopipe
 # to build binary in the current directory
 go build -ldflags="-s -w" "cli/geopipe"
