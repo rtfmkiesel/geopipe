@@ -13,6 +13,7 @@ Options:
     -f 	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
     -r  Comma-separated list of DNS resolvers to use (default: 9.9.9.9,1.1.1.1,8.8.8.8)
     -t 	Number of threads to spawn (default: 1)
+    -s  Do not print errors
     -h 	Prints this text
 ```
 

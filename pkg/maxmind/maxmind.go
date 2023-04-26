@@ -1,47 +1,50 @@
 package maxmind
 
 import (
-	"fmt"
 	"net"
-	"os"
 	"sync"
 
 	"github.com/oschwald/maxminddb-golang"
 	"github.com/rtfmkiesel/geopipe/pkg/dns"
+	"github.com/rtfmkiesel/geopipe/pkg/utils"
 )
 
+// Struct for the DB lookup results
 type Result struct {
 	Domain      string
 	IP          string
 	CountryCode string
 }
 
-// goroutine for MaxMindDB lookups
+// Struct for the country code inside the MaxMind db
+type mmdbRecord struct {
+	Country struct {
+		ISOCode string `maxminddb:"iso_code"`
+	} `maxminddb:"country"`
+}
+
+// Go func to handle the MaxMind DB lookups
+//
+// Will take input jobs in the form of dns.Result and output results in the form of maxmind.Result
 func Runner(wg *sync.WaitGroup, chanJobs <-chan dns.Result, chanOutput chan<- Result, db *maxminddb.Reader) {
 	defer wg.Done()
 
-	// for each job
+	// For each job
 	for job := range chanJobs {
 
-		// struct for the country code inside the MaxMind db
-		var mmdbRecord struct {
-			Country struct {
-				ISOCode string `maxminddb:"iso_code"`
-			} `maxminddb:"country"`
-		}
-
-		// get the country code from the db
-		err := db.Lookup(net.ParseIP(job.IP), &mmdbRecord)
+		// Get the country code from the db
+		var record mmdbRecord
+		err := db.Lookup(net.ParseIP(job.IP), &record)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			utils.CatchErr(err)
+			continue
 		}
 
-		// add a result to the output channel
+		// Add a result to the output channel
 		chanOutput <- Result{
 			Domain:      job.Domain,
 			IP:          job.IP,
-			CountryCode: mmdbRecord.Country.ISOCode,
+			CountryCode: record.Country.ISOCode,
 		}
 	}
 }

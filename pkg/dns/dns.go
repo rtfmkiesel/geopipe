@@ -1,51 +1,50 @@
 package dns
 
 import (
-	"fmt"
 	"math/rand"
-	"os"
 	"sync"
 	"time"
 
 	"github.com/projectdiscovery/retryabledns"
+	"github.com/rtfmkiesel/geopipe/pkg/utils"
 )
 
+// Result for the DNS jobs
 type Result struct {
 	Domain string
 	IP     string
 }
 
-// goroutine for DNS lookups
+// Go func to handle the DNS lookups since MaxMind needs IPs
+//
+// Will take input jobs in the form of strings and output results in the form of dns.Result
 func Runner(wg *sync.WaitGroup, chanJobs <-chan string, chanOutput chan<- Result, dnsServers []string) {
 	defer wg.Done()
 
-	// shuffle resolvers
+	// Shuffle DNS resolvers
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	r.Shuffle(len(dnsServers), func(i, j int) {
 		dnsServers[i], dnsServers[j] = dnsServers[j], dnsServers[i]
 	})
 
-	fmt.Println(dnsServers)
-
-	// init DNS client
+	// Init DNS client
 	dnsClient, err := retryabledns.New(dnsServers, 3)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		utils.CatchCritErr(err)
 	}
 
-	// for each job
+	// For each job
 	for domain := range chanJobs {
-		// make a DNS query
+		// Make a DNS query
 		addrs, err := dnsClient.Resolve(domain)
 		if err != nil {
-			// on timeout or non existing DNS entries
+			utils.CatchErr(err)
 			continue
 		}
 
-		// for each found IP addr
+		// For each found IP addr
 		for _, addr := range addrs.A {
-			// add a result to the output channel
+			// Add a result to the output channel
 			chanOutput <- Result{
 				Domain: domain,
 				IP:     addr,
