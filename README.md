@@ -11,6 +11,7 @@ Usage: cat domains.txt | geopipe [OPTIONS]
 Options:
     -c 	Two letter country code of the country to pipe thru (default: US)
     -f 	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
+    -r  Comma-separated list of DNS resolvers to use (default: 9.9.9.9,1.1.1.1,8.8.8.8)
     -t 	Number of threads to spawn (default: 1)
     -h 	Prints this text
 ```

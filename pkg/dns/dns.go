@@ -2,8 +2,10 @@ package dns
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/projectdiscovery/retryabledns"
 )
@@ -16,6 +18,14 @@ type Result struct {
 // goroutine for DNS lookups
 func Runner(wg *sync.WaitGroup, chanJobs <-chan string, chanOutput chan<- Result, dnsServers []string) {
 	defer wg.Done()
+
+	// shuffle resolvers
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	r.Shuffle(len(dnsServers), func(i, j int) {
+		dnsServers[i], dnsServers[j] = dnsServers[j], dnsServers[i]
+	})
+
+	fmt.Println(dnsServers)
 
 	// init DNS client
 	dnsClient, err := retryabledns.New(dnsServers, 3)

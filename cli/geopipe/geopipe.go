@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/asaskevich/govalidator"
@@ -50,10 +51,12 @@ func main() {
 	// setup the args
 	var flagCC string
 	var flagDB string
+	var flagResolvers string
 	var flagThreads int
 	// parse the args
 	flag.StringVar(&flagCC, "c", "US", "")
 	flag.StringVar(&flagDB, "f", "./GeoLite2-Country.mmdb", "")
+	flag.StringVar(&flagResolvers, "r", "9.9.9.9,1.1.1.1,8.8.8.8", "")
 	flag.IntVar(&flagThreads, "t", 1, "")
 	flag.Usage = func() {
 		fmt.Printf(`Usage: cat domains.txt | geopipe [OPTIONS]
@@ -61,6 +64,7 @@ func main() {
 Options:
     -c 	Two letter country code of the country to pipe thru (default: US)
     -f 	Path to the 'GeoLite2-Country.mmdb' file (default: ./GeoLite2-Country.mmdb)
+    -r  Comma-separated list of DNS resolvers to use (default: 9.9.9.9,1.1.1.1,8.8.8.8)
     -t 	Number of threads to spawn (default: 1)
     -h 	Prints this text
 	
@@ -108,8 +112,15 @@ Options:
 	wgDB := new(sync.WaitGroup)
 	wgOut := new(sync.WaitGroup)
 
-	// populating resolver pool
-	dnsServers := []string{"9.9.9.9:53", "1.1.1.1:53", "8.8.8.8:53"}
+	// parse the DNS resolvers
+	var dnsServers []string
+	for _, resolver := range strings.Split(flagResolvers, ",") {
+		// validate if the given string is an IP
+		if govalidator.IsIP(resolver) {
+			// append to the slice with ":53" added at the end
+			dnsServers = append(dnsServers, fmt.Sprintf("%s:53", resolver))
+		}
+	}
 
 	// creating the DNS runners
 	for i := 0; i < flagThreads; i++ {
